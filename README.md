@@ -8,6 +8,6 @@ The AD9833 Precision Waveform Generator FeatherWing is an Adafruit Feather-compa
 
 The AD9833 Precision Waveform Generator FeatherWing was tested with a Feather M4 Express using CircuitPython version 4.1.0 rc-1. Example code is provided in the repository. Refer to the Analog Devices' AD9833 Waveform Generator data sheet for device control protocol details.
 
-OSH Park project: https://oshpark.com/shared_projects/xyz123
+OSH Park project: https://oshpark.com/shared_projects/al6aPN0u
 
 ![Image of Test Setup](https://github.com/CedarGroveStudios/AD9833_FeatherWing/blob/master/photos/DSC05796%20combo.jpg)
