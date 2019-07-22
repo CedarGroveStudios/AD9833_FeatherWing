@@ -1,7 +1,8 @@
 # AD9833_FeatherWing_sweep.py
 # 2019-07-21 Cedar Grove Studios
-# from https://ez.analog.com/dds/f/q-a/28431/ad9833-programming-in-raspberry-pi-using-python/332015#332015
-# adapted for CircuitPython
+# Fixed or swept frequency generator example. Update "initial parameters"
+# section for required functionality.
+# Tested on an Adafruit Feather M4 Express using CircuitPython 4.1.0 rc-1.
 
 import time
 import board
