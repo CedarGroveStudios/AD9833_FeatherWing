@@ -1,0 +1,23 @@
+G04 #@! TF.GenerationSoftware,KiCad,Pcbnew,(5.0.0-rc2-dev-444-g2974a2c10)*
+G04 #@! TF.CreationDate,2019-07-21T13:12:54-07:00*
+G04 #@! TF.ProjectId,Waveform_Generator,57617665666F726D5F47656E65726174,v01*
+G04 #@! TF.SameCoordinates,Original*
+G04 #@! TF.FileFunction,Paste,Bot*
+G04 #@! TF.FilePolarity,Positive*
+%FSLAX46Y46*%
+G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
+G04 Created by KiCad (PCBNEW (5.0.0-rc2-dev-444-g2974a2c10)) date 07/21/19 13:12:54*
+%MOMM*%
+%LPD*%
+G01*
+G04 APERTURE LIST*
+%ADD10R,1.600000X1.200000*%
+%ADD11R,1.300000X0.700000*%
+G04 APERTURE END LIST*
+D10*
+X104140000Y-102975000D03*
+X104140000Y-106175000D03*
+D11*
+X104140000Y-111740000D03*
+X104140000Y-113640000D03*
+M02*
