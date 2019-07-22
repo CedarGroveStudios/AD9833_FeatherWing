@@ -4,15 +4,9 @@
 
 ![Image of Module](https://github.com/CedarGroveStudios/AD9833_FeatherWing/blob/master/photos/Waveform_Generator%20glamour.png)
 
-The Classic MIDI FeatherWing interface is an Adafruit Feather-compatible module. Deriving its power from the host Feather's 3.3V power, the interface converts incoming and outgoing classic MIDI current-loop input and output to Feather UART (RX and TX) logic pins.
+The AD9833 Precision Waveform Generator FeatherWing is an Adafruit Feather-compatible module. The Waveform Generator produces an op-amp buffered sine, triangle, or square wave output with a practical frequency range of approximately 0 to 300KHz with 0.1Hz resolution. Frequency accuracy and stability is determined by the 25MHz clock source. Waveform Generator control is via the Feather SPI bus; chip select is provided by the Feather's D6 logic pin. Output signal peak-to-peak amplitude is adjustable with a maximum unipolar output of slightly less than 3.3 volts. The wing derives its power from the host Feather's 3.3V power.
 
-The wing provides on-board input and output footprints for 3.5mm TRS Type B and DIN-5 connectors while maintaining the Feather dimensional format, thanks to John Park's inspirational _Feather MIDI Nub_ design (Twitter: @johnedgarpark). The MIDI input is an optically-isolated connection. MIDI output is buffered and current-limited. On-board receive (RX) and transmit (TX) LEDs indicate incoming and outgoing signals.
-
-DIN-5 MIDI jack used: https://www.adafruit.com/product/1134
-
-3.5mm TRS MIDI jack used: https://www.adafruit.com/product/1699
-
-The Classic MIDI interface was tested with CircuitPython version 4.1.0 beta 1 and earlier releases. Example code is provided in the repository. Additional code examples can be found within the _adafruit__midi_ CircuitPython examples distribution.
+The Classic MIDI interface was tested with CircuitPython version 4.1.0 rc 1 and earlier releases. Example code is provided in the repository. Refer to the Analog Devices' AD9833 Waveform Generator data sheet for control protocol details.
 
 OSH Park project: https://oshpark.com/shared_projects/AyVkzfXM
 
