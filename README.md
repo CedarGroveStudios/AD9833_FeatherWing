@@ -16,4 +16,4 @@ The Classic MIDI interface was tested with CircuitPython version 4.1.0 beta 1 an
 
 OSH Park project: https://oshpark.com/shared_projects/AyVkzfXM
 
-![Image of Module](https://github.com/CedarGroveStudios/Classic_MIDI_FeatherWing/blob/master/Classic%20MIDI%20FeatherWing%20glam.png)
+![Image of Test Setup](https://github.com/CedarGroveStudios/AD9833_FeatherWing/blob/master/photos/DSC05796%20combo.jpg)
