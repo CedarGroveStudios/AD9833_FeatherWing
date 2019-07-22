@@ -2,7 +2,7 @@
 
 ### _A precision waveform generator FeatherWing_
 
-![Image of Module](https://github.com/CedarGroveStudios/Classic_MIDI_FeatherWing/blob/master/DSC05764a%20lores.jpg)
+![Image of Module](https://github.com/CedarGroveStudios/AD9833_FeatherWing/blob/photos/Waveform_Generator%20glamour.jpg)
 
 The Classic MIDI FeatherWing interface is an Adafruit Feather-compatible module. Deriving its power from the host Feather's 3.3V power, the interface converts incoming and outgoing classic MIDI current-loop input and output to Feather UART (RX and TX) logic pins.
 
