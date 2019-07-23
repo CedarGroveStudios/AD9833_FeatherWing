@@ -15,9 +15,12 @@ cs.value = True
 
 spi = busio.SPI(board.SCK, MOSI=board.MOSI)
 
+print("AD9833_FeatherWing_sweep_v01.py")
+
 # Calculate frequency and form 14-bit least significant
 #   and most significant words for 28-bit clock divider
 #   Format 12-bit phase word
+#   Overlays freq and phase register addresses
 #   Default clock speed is 25MHz
 def calc_wave_gen_freq(freq=440, phase=0, m_clock=25000000, freq_reg=0, phase_reg=0):
     freq_word = int(round(float(freq * pow(2,28)) / m_clock))
@@ -56,7 +59,7 @@ def update_freq(freq=440, reg=0):  # update freq register value
     send_data(freq_lsw)
     send_data(freq_msw)
 
-def update_freq_reg(reg=0):  # enables frequency register
+def select_freq_reg(reg=0):  # enables frequency register
     send_data(0x2000 | reg << 11)
 
 def start_wave_gen(type="sine"):
@@ -97,26 +100,27 @@ while True:
         start_wave_gen(wave_type)
 
         if freq_mode == "sweep":
+            # print("sweep: mode, begin, end, increment")
+            # print(sweep_mode, begin_freq, end_freq, inc_freq)
             old_freq = begin_freq
             f_reg = 0
             for i in range(begin_freq, end_freq, inc_freq):
                 # print("sweep: frequency =", i)
                 update_freq(i, f_reg)
-                update_freq_reg(f_reg)
+                select_freq_reg(f_reg)
 
-                if f_reg == 0:  # swap freq registers
-                    f_reg = 1
-                else:
-                    f_reg = 0
+                # swap freq registers
+                if f_reg == 0: f_reg = 1
+                else: f_reg = 0
 
                 if sweep_mode == "non-linear":
                     time.sleep(periods_per_step * (1 / i))  # pause for x periods at the specified frequency
                 else:
                     time.sleep(0.010)  # 10msec fixed hold time per step
         else:
-            print("fixed: frequency =", begin_freq)
-            update_freq(begin_freq)
-            update_freq_reg()
+            # print("fixed: frequency =", begin_freq)
+            update_freq(begin_freq)  # freq register 0
+            select_freq_reg()        # freq register 0
             time.sleep(10)  # 10sec fixed hold time
         reset_wave_gen()
 
