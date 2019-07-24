@@ -97,12 +97,12 @@ print("AD9833_FeatherWing_sweep_v01.py")
 
 # establish initial parameters
 begin_freq = 20         # fixed or sweep starting frequency (Hz)
-end_freq = 2000        # sweep ending frequency (Hz)
-inc_freq = 10          # sweep freqency step size (Hz)
+end_freq = 20000        # sweep ending frequency (Hz)
+inc_freq = 100          # sweep freqency step size (Hz)
 periods_per_step = 300  # number of waveform periods to hold (non-linear mode)
 sweep_mode = "fixed"    # fixed (10ms per step) or non-linear sweep hold timing
 freq_mode = "sweep"     # fixed or sweep frequency
-wave_type = "square"      # sine, triangle, or square waveform
+wave_type = "sine"      # sine, triangle, or square waveform
 
 while True:
     # connect through SPI bus
