@@ -61,10 +61,16 @@ def stop_wave_gen():  # stop wave generator and hold output at mid-point
     update_phase(0,0)  # set phase register 0 to 0
     update_phase(0,1)  # set phase register 1 to 0
 
-def select_freq_reg(reg=0):  # enable frequency register 0 or 1
+def select_freq_reg(reg=0, type="sine"):  # enable frequency register 0 or 1
     send_data(0x2000 | reg << 11)
+    freq_register = 0x2000 | reg << 11  # default sine mode with register select bit
+    if type == "triangle":
+        freq_register |= 0x0002  # triangle mode
+    if type == "square":
+        freq_register |= 0x0028  # square mode
+    send_data(freq_register)  # start wave generator, sine output
 
-def select_phase_reg(reg=0):  # enable phase register 0 or 1
+def select_phase_reg(reg=0):  # enable phase register 0 or 1 ---NOT WORKING---
     send_data()
 
 def update_freq(freq=440, reg=0):  # update freq register value
@@ -91,12 +97,12 @@ print("AD9833_FeatherWing_sweep_v01.py")
 
 # establish initial parameters
 begin_freq = 20         # fixed or sweep starting frequency (Hz)
-end_freq = 20000        # sweep ending frequency (Hz)
-inc_freq = 100          # sweep freqency step size (Hz)
+end_freq = 2000        # sweep ending frequency (Hz)
+inc_freq = 10          # sweep freqency step size (Hz)
 periods_per_step = 300  # number of waveform periods to hold (non-linear mode)
 sweep_mode = "fixed"    # fixed (10ms per step) or non-linear sweep hold timing
 freq_mode = "sweep"     # fixed or sweep frequency
-wave_type = "sine"      # sine, triangle, or square waveform
+wave_type = "square"      # sine, triangle, or square waveform
 
 while True:
     # connect through SPI bus
@@ -118,7 +124,7 @@ while True:
             for i in range(begin_freq, end_freq, inc_freq):
                 # print("sweep: frequency =", i)
                 update_freq(i, f_reg)
-                select_freq_reg(f_reg)
+                select_freq_reg(f_reg, wave_type)
 
                 # alternate freq registers to eliminate register loading noise
                 if f_reg == 0: f_reg = 1
