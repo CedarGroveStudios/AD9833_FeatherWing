@@ -1,9 +1,49 @@
-# AD9833_FeatherWing_sweep_v01.py
-# 2019-07-22 Cedar Grove Studios
-# Fixed or swept frequency generator example. Update "initial parameters"
-# section for required functionality.
-#
-# Tested with Adafruit Feather M4 Express and CircuitPython 4.1.0 rc-1.
+# The MIT License (MIT)
+
+# Copyright (c) 2019 Cedar Grove Studios
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+"""
+`cedargrove_AD9833_featherwing`
+================================================================================
+AD9833 FeatherWing 2019-07-2316 v01 07:04PM
+A CircuitPython class for operational transport control
+of the Cedar Grove AD9833 Precision Waveform Genereator FeatherWing
+
+* Author(s): Cedar Grove Studios
+
+Implementation Notes
+--------------------
+**Hardware:**
+* Cedar Grove Studios AD9833 Precision Waveform Generator FeatherWing
+
+**Software and Dependencies:**
+* Adafruit CircuitPython firmware for the supported boards:
+  https://github.com/adafruit/circuitpython/releases
+
+"""
+
+__version__ = "0.0.0-auto.0"
+__repo__ = "https://github.com/CedarGroveStudios/AD9833_FeatherWing.git"
+
+class AD9833:
+    """range_slicer helper class."""
 
 import time
 import board
