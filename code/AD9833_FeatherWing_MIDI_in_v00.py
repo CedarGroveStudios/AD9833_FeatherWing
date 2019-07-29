@@ -3,14 +3,14 @@
 # Simple MIDI voice module using Cedar Grove AD9833 Precision Waveform
 #     Generator FeatherWing and Cedar Grove Classic MIDI FeatherWing
 #
-#      cedargrove_AD9833_FeatherWing library
+#      cedargrove_ad9833 driver
 #      cedargrove_MIDI_util library
 #
 # Tested with Adafruit Feather M4 Express and CircuitPython 4.1.0 rc-1.
 
 # establish class instance with chip_select pin D6
-import cedargrove_AD9833_FeatherWing as AD9833
-wave_gen = AD9833.WaveGenerator(select="D6")
+import cedargrove_ad9833
+wave_gen = cedargrove_ad9833.AD9833(select="D6")
 
 import board
 import busio

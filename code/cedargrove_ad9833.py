@@ -20,10 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-`cedargrove_AD9833_FeatherWing`
+`cedargrove_ad9833`
 ================================================================================
-cedargrove_AD9833_FeatherWing.py 2019-07-27 v00 06:59PM
-A CircuitPython class for controlling the Precision Waveform Generator FeatherWing.
+cedargrove_ad9833.py 2019-07-27 v00 06:59PM
+A CircuitPython class for controlling the AD9833 Precision Waveform
+Generator FeatherWing.
 
 * Author(s): Cedar Grove Studios
 
@@ -41,7 +42,7 @@ Implementation Notes
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/CedarGroveStudios/AD9833_FeatherWing.git"
 
-class WaveGenerator:
+class AD9833:
     """wave_generator helper class."""
 
     def __init__(self, wave_freq=440, wave_phase=0, wave_type="sine", select="D6", m_clock=25000000, debug=False):

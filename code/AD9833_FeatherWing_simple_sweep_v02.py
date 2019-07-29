@@ -3,14 +3,14 @@
 # Simple swept frequency generator example. Update "initial parameters"
 # section for required functionality.
 #
-# uses cedargrove_AD9833_FeatherWing library
+# uses cedargrove_ad9833 driver
 # Tested with Adafruit Feather M4 Express and CircuitPython 4.1.0 rc-1.
 
 import time
 
 # establish class instance with chip_select pin D6
-import cedargrove_AD9833_FeatherWing as AD9833
-wave_gen = AD9833.WaveGenerator(select="D6")
+import cedargrove_ad9833
+wave_gen = cedargrove_ad9833.AD9833(select="D6")
 
 # *** Helpers ***
 
