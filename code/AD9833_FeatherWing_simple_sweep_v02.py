@@ -27,6 +27,7 @@ wave_gen.reset()  # reset and stop the wave generator; reset all registers
 wave_gen.wave_type = wave_type  # load the waveform type value
 
 while True:
+    wave_gen.update_freq(begin_freq)  # set begin freq value to reduce start-up noise
     wave_gen.start()  # start the wave generator
 
     # sweep from begin_freq to end_freq in inc_freq steps
