@@ -74,7 +74,7 @@ def wave_adsR(s=(1.0,0), r=(0.0,0)):
     amplitude_stepper(s[0], r[0], r[1])  # release
 
 # *** Main code area ***
-print("AD9833_FeatherWing_MIDI_in_v00.py")
+print("AD9833_FeatherWing_ADSR_v00.py")
 print("Input channel:", midi.in_channel + 1 )
 
 # establish initial parameters
@@ -152,4 +152,3 @@ while True:
         elif isinstance(msg, MIDIUnknownEvent):
             # Message are only known if they are imported
             print("Unknown MIDI event status ", msg.status)
-            
