@@ -78,14 +78,14 @@ print("AD9833_FeatherWing_MIDI_in_v00.py")
 print("Input channel:", midi.in_channel + 1 )
 
 # establish initial parameters
-adsr_A  = (.8, 0.5)  # attack level, time
-adsr_D  = (1.0, 0.5)  # decay level, time
-adsr_S  = (.6, 0.5)  # sustain level, time
-adsr_R  = (0.0, 1)  # release level, time
+adsr_A  = (1.0, 0.3) # attack level, time
+adsr_D  = (0.6, 0.3) # decay level, time
+adsr_S  = (0.6, 0.1) # sustain level, time
+adsr_R  = (0, 0.5)   # release level, time
 
 t0 = time.monotonic_ns()
 tempo = 0
-wave_type = "sine"      # sine, triangle, or square waveform
+wave_type = "triangle"      # sine, triangle, or square waveform
 
 wave_gen.reset()  # reset and stop the wave generator; reset all registers
 wave_gen.wave_type = wave_type  # load the waveform type value
@@ -96,7 +96,7 @@ while True:
     msg = midi.receive()
 
     if msg is not None:
-        midi.send(msg)  # MIDI thru
+        # midi.send(msg)  # MIDI thru
         if isinstance(msg, NoteOn):
             print("NoteOn : #%02d %s %5.3fHz" % (msg.note, note_lexo(msg.note), note_freq(msg.note)))
             print("     vel   %03d     chan #%02d" %(msg.velocity, msg.channel + 1))
@@ -111,8 +111,9 @@ while True:
 
         elif isinstance(msg, TimingClock):
             t1 = time.monotonic_ns()
-            tempo = (tempo + (1 / ((t1 - t0) * 24) * 60 * 1e9)) / 2 # simple running average
-            if (t1-t0) != 0: print("-- Tick: %03.1f BPM" % tempo)  # compared to previous tick
+            if (t1-t0) != 0:
+                tempo = (tempo + (1 / ((t1 - t0) * 24) * 60 * 1e9)) / 2 # simple running average
+                print("-- Tick: %03.1f BPM" % tempo)  # compared to previous tick
             t0 = time.monotonic_ns()
 
         elif isinstance(msg, ChannelPressure):
@@ -151,3 +152,4 @@ while True:
         elif isinstance(msg, MIDIUnknownEvent):
             # Message are only known if they are imported
             print("Unknown MIDI event status ", msg.status)
+            
