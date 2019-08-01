@@ -45,30 +45,41 @@ midi = adafruit_midi.MIDI(midi_in=UART, midi_out=UART, in_channel=0, out_channel
 
 # *** Helpers ***
 
-def amplitude_stepper(start, end, period, level=1.0):  # step from start to end amplitude over time period
+def amplitude_stepper(start, end, period, level=1.0, port=False, note=0, last_note=0):  # step from start to end amplitude over time period
     if start < end:
         for i in range(0, 64):
             r = (3 / 2 * 3.14159) + ((3.14159 / 64) * i)
-            amplitude = (start + ((end - start) * ((sin(r) + 1) / 2))) * level
+            if port:
+                wave_gen.update_freq(note_freq(last_note)+(((note_freq(note)-note_freq(last_note))/64)*i))
+                amplitude = end * level
+            else:
+                wave_gen.update_freq(note_freq(note))
+                amplitude = (start + ((end - start) * ((sin(r) + 1) / 2))) * level
             dac_out.value = int(65535 * amplitude)
             time.sleep(period / 64)
     elif start > end:
          for i in range(0, 64):
             r = (3.14159 / 2) + ((3.14159 / 64) * i)
-            amplitude = (end + ((start - end) * ((sin(r) + 1) / 2))) * level
+            if port:
+                wave_gen.update_freq(note_freq(last_note)+(((note_freq(note)-note_freq(last_note))/64)*i))
+                amplitude = end * level
+            else:
+                wave_gen.update_freq(note_freq(note))
+                amplitude = (end + ((start - end) * ((sin(r) + 1) / 2))) * level
             dac_out.value = int(65535 * amplitude)
             time.sleep(period / 64)
     else:  # start = end
         dac_out.value = int(65535 * start * level)
         time.sleep(period)
 
-def wave_ADSr(a=(1.0,0), d=(1.0,0), s=(1.0,0), level=1.0):
-    amplitude_stepper(0, a[0], a[1], level)  # attack
-    amplitude_stepper(a[0], d[0], d[1], level)  # decay
-    amplitude_stepper(d[0], s[0], s[1], level)  # sustain
+def wave_ADSr(a=(1.0,0), d=(1.0,0), s=(1.0,0), level=1.0, port=False, note=0, last_note=0):
+    amplitude_stepper(0, a[0], a[1], level, port, note, last_note)  # attack
+    amplitude_stepper(a[0], d[0], d[1], level, port, note, note)  # decay
+    amplitude_stepper(d[0], s[0], s[1], level, port, note, note)  # sustain
 
-def wave_adsR(s=(1.0,0), r=(0.0,0), level=0):
-    amplitude_stepper(s[0], r[0], r[1], level)  # release
+def wave_adsR(s=(1.0,0), r=(0.0,0), level=0, port=False):
+    if port: amplitude_stepper(s[0], s[0], r[1], level, port)  # release
+    else: amplitude_stepper(s[0], r[0], r[1], level, port)  # release
 
 # *** Main code area ***
 print("AD9833_FeatherWing_ADSR_v01.py")
@@ -81,8 +92,11 @@ adsr_S  = (0.8, 0.05)  # sustain level, time
 adsr_R  = (0.0, 0.10)  # release level, time
 
 t0 = time.monotonic_ns()
-tempo = 0.0
-last_vel_level = 0.0
+tempo = 0.0  # establish initial tempo value
+last_vel_level = 0.0  # establish initial last velocity value
+last_note_value = 0  # establish initial last note value
+
+portamento = False  # default portamento value
 
 wave_type = "triangle"  # sine, triangle, or square waveform
 wave_gen.reset()  # reset and stop the wave generator; reset all registers
@@ -98,14 +112,15 @@ while True:
             print("NoteOn : #%02d %s %5.3fHz" % (msg.note, note_lexo(msg.note), note_freq(msg.note)))
             print("     vel   %03d     chan #%02d" %(msg.velocity, msg.channel + 1))
             last_vel_level = msg.velocity / 127
-            wave_gen.update_freq(note_freq(msg.note))
-            if msg.velocity > 0: wave_ADSr(adsr_A, adsr_D, adsr_S, msg.velocity / 127)
-            else: wave_adsR(adsr_S, adsr_R, last_vel_level)
+            if msg.velocity > 0: wave_ADSr(adsr_A, adsr_D, adsr_S, msg.velocity / 127, portamento, msg.note, last_note_value)
+            else: wave_adsR(adsr_S, adsr_R, last_vel_level, portamento)
+            last_note_value = msg.note
 
         elif isinstance(msg, NoteOff):
             print("NoteOff: #%02d %s %5.3fHz" % (msg.note, note_lexo(msg.note), note_freq(msg.note)))
             print("     vel   %03d     chan #%02d" %(msg.velocity, msg.channel + 1))
-            wave_adsR(adsr_S, adsr_R, last_vel_level)
+            wave_adsR(adsr_S, adsr_R, last_vel_level, portamento)
+            last_note_value = msg.note
 
         elif isinstance(msg, TimingClock):
             t1 = time.monotonic_ns()
