@@ -1,5 +1,5 @@
-# AD9833_FeatherWing_MIDI_in_v00.py
-# 2019-07-28 Cedar Grove Studios
+# AD9833_FeatherWing_ADSR_v01.py
+# 2019-07-31 Cedar Grove Studios
 # Simple MIDI voice module using Cedar Grove AD9833 Precision Waveform
 #     Generator FeatherWing and Cedar Grove Classic MIDI FeatherWing
 #
@@ -15,6 +15,7 @@ wave_gen = AD9833.WaveGenerator(select="D6")
 import board
 import busio
 import time
+from math import sin
 import adafruit_midi
 import usb_midi
 
@@ -22,7 +23,7 @@ import usb_midi
 # connect output of AD9833 wing to Feather AREF (after removing AREF to 3.3v trace)
 from analogio import AnalogOut
 dac_out = AnalogOut(board.A0)
-dac_out.value = 0  # start a zero amplitude
+dac_out.value = 0  # mute the output
 
 from cedargrove_MIDI_util import *
 
@@ -44,55 +45,51 @@ midi = adafruit_midi.MIDI(midi_in=UART, midi_out=UART, in_channel=0, out_channel
 
 # *** Helpers ***
 
-def amplitude_stepper(start, end, period):  # step from start to end amplitude over time period
+def amplitude_stepper(start, end, period, level=1.0):  # step from start to end amplitude over time period
     if start < end:
-        dac_out.value = int(65535 * start)
-        for amplitude in range(int(start*100), int(end*100)):
-            if amplitude != 0:
-                dac_out.value = int(65535 * (amplitude/100))
-            else:
-                dac_out.value = 0
-            time.sleep(period/100)
+        for i in range(0, 64):
+            r = (3 / 2 * 3.14159) + ((3.14159 / 64) * i)
+            amplitude = (start + ((end - start) * ((sin(r) + 1) / 2))) * level
+            dac_out.value = int(65535 * amplitude)
+            time.sleep(period / 64)
     elif start > end:
-        dac_out.value = int(65535 * start)
-        for amplitude in range(int(start*100), int(end*100), -1):
-            if amplitude != 0:
-                dac_out.value = int(65535 * (amplitude/100))
-            else:
-                dac_out.value = 0
-            time.sleep(period/100)
+         for i in range(0, 64):
+            r = (3.14159 / 2) + ((3.14159 / 64) * i)
+            amplitude = (end + ((start - end) * ((sin(r) + 1) / 2))) * level
+            dac_out.value = int(65535 * amplitude)
+            time.sleep(period / 64)
     else:  # start = end
-        dac_out.value = int(65535 * start)
+        dac_out.value = int(65535 * start * level)
         time.sleep(period)
 
-def wave_ADSr(a=(1.0,0), d=(1.0,0), s=(1.0,0)):
-    amplitude_stepper(0, a[0], a[1])  # attack
-    amplitude_stepper(a[0], d[0], d[1])  # decay
-    amplitude_stepper(d[0], s[0], s[1])  # sustain
+def wave_ADSr(a=(1.0,0), d=(1.0,0), s=(1.0,0), level=1.0):
+    amplitude_stepper(0, a[0], a[1], level)  # attack
+    amplitude_stepper(a[0], d[0], d[1], level)  # decay
+    amplitude_stepper(d[0], s[0], s[1], level)  # sustain
 
-def wave_adsR(s=(1.0,0), r=(0.0,0)):
-    amplitude_stepper(s[0], r[0], r[1])  # release
+def wave_adsR(s=(1.0,0), r=(0.0,0), level=0):
+    amplitude_stepper(s[0], r[0], r[1], level)  # release
 
 # *** Main code area ***
-print("AD9833_FeatherWing_ADSR_v00.py")
+print("AD9833_FeatherWing_ADSR_v01.py")
 print("Input channel:", midi.in_channel + 1 )
 
 # establish initial parameters
-adsr_A  = (1.0, 0.3) # attack level, time
-adsr_D  = (0.6, 0.3) # decay level, time
-adsr_S  = (0.6, 0.1) # sustain level, time
-adsr_R  = (0, 0.5)   # release level, time
+adsr_A  = (1.0, 0.10)  # attack level, time
+adsr_D  = (0.8, 0.05)  # decay level, time
+adsr_S  = (0.8, 0.05)  # sustain level, time
+adsr_R  = (0.0, 0.10)  # release level, time
 
 t0 = time.monotonic_ns()
-tempo = 0
-wave_type = "triangle"      # sine, triangle, or square waveform
+tempo = 0.0
+last_vel_level = 0.0
 
+wave_type = "triangle"  # sine, triangle, or square waveform
 wave_gen.reset()  # reset and stop the wave generator; reset all registers
 wave_gen.wave_type = wave_type  # load the waveform type value
 wave_gen.start()
 
 while True:
-
     msg = midi.receive()
 
     if msg is not None:
@@ -100,20 +97,21 @@ while True:
         if isinstance(msg, NoteOn):
             print("NoteOn : #%02d %s %5.3fHz" % (msg.note, note_lexo(msg.note), note_freq(msg.note)))
             print("     vel   %03d     chan #%02d" %(msg.velocity, msg.channel + 1))
+            last_vel_level = msg.velocity / 127
             wave_gen.update_freq(note_freq(msg.note))
-            if msg.velocity > 0: wave_ADSr(adsr_A, adsr_D, adsr_S)
-            else: wave_adsR(adsr_S, adsr_R)
+            if msg.velocity > 0: wave_ADSr(adsr_A, adsr_D, adsr_S, msg.velocity / 127)
+            else: wave_adsR(adsr_S, adsr_R, last_vel_level)
 
         elif isinstance(msg, NoteOff):
             print("NoteOff: #%02d %s %5.3fHz" % (msg.note, note_lexo(msg.note), note_freq(msg.note)))
             print("     vel   %03d     chan #%02d" %(msg.velocity, msg.channel + 1))
-            wave_adsR(adsr_S, adsr_R)
+            wave_adsR(adsr_S, adsr_R, last_vel_level)
 
         elif isinstance(msg, TimingClock):
             t1 = time.monotonic_ns()
             if (t1-t0) != 0:
                 tempo = (tempo + (1 / ((t1 - t0) * 24) * 60 * 1e9)) / 2 # simple running average
-                print("-- Tick: %03.1f BPM" % tempo)  # compared to previous tick
+                # print("-- Tick: %03.1f BPM" % tempo)  # compared to previous tick
             t0 = time.monotonic_ns()
 
         elif isinstance(msg, ChannelPressure):
@@ -152,3 +150,4 @@ while True:
         elif isinstance(msg, MIDIUnknownEvent):
             # Message are only known if they are imported
             print("Unknown MIDI event status ", msg.status)
+            
