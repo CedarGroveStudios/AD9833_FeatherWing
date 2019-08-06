@@ -17,8 +17,6 @@ OSH Park project: https://oshpark.com/shared_projects/al6aPN0u
 
 Refer to the Analog Devices' AD9833 Waveform Generator data sheet for device control protocol details.
 
-OSH Park project: https://oshpark.com/shared_projects/al6aPN0u
-
 ![Fritzing Image](https://github.com/CedarGroveStudios/AD9833_FeatherWing/blob/master/photos/Waveform_Generator%20for%20fritzing.png)
 
 ![FeatherWing Implementation Chart](https://github.com/CedarGroveStudios/AD9833_FeatherWing/blob/master/docs/FeatherWing_Implementation_Chart.png)
