@@ -60,7 +60,7 @@ OSH Park project: https://oshpark.com/shared_projects/al6aPN0u
 5)	The low peak of the waveform only reaches +150mV not 0V as anticipated
 6)	Waveform generator DAC output filtering capacitance was listed incorrectly in the datasheet example; value used for manufacturer testing was correct
 7)	Separate analog ground on the PCB helped to reduce analog output digital noise
-8)	ADSR envelope generation will require additional circuitry (see AD9833_FeatherWing_ADSR repo for the full discussion of tests)
+8)	ADSR envelope generation will require additional circuitry (see https://github.com/CedarGroveStudios/AD9833_ADSR for the full discussion of tests)
 9)	Output frequency change throughput of the CircuitPython example code (using the cedargrove_AD9833 library) is approximately 450usec, allowing for frequency sweep steps and modulation rates of > 2k changes(steps) per sec
 10)	CircuitPython driver code was simpler to create than anticipated  
   a.	CircuitPython SPI communications techniques are well-documented  
