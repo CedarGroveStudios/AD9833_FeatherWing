@@ -22,3 +22,5 @@ The AD9833 Precision Waveform Generator FeatherWing was tested with a Feather M4
 OSH Park project: https://oshpark.com/shared_projects/al6aPN0u
 
 ![Image of Test Setup](https://github.com/CedarGroveStudios/AD9833_FeatherWing/blob/master/photos/DSC05796%20combo.jpg)
+
+![FeatherWing Implementation Chart](https://github.com/CedarGroveStudios/AD9833_FeatherWing/blob/master/photos/FeatherWing_Implementation_Chart.png)
