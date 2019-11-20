@@ -4,7 +4,7 @@
 ![Image of Module](https://github.com/CedarGroveStudios/AD9833_FeatherWing/blob/master/photos/Waveform_Generator_social.png)
 
 ## Overview
-The AD9833 Precision Waveform Generator FeatherWing is an Adafruit Feather-compatible module. The Waveform Generator produces an op-amp buffered sine, triangle, or square wave output with a practical frequency range of approximately 0 to 300KHz with 0.1Hz resolution.  
+The AD9833 Precision Waveform Generator FeatherWing is an Adafruit Feather-compatible module. The Waveform Generator produces an op-amp buffered sine, triangle, or square wave output with a practical frequency range of 0.5Hz to 100KHz with 0.1Hz resolution.  
   * Frequency accuracy and stability is determined by the on-board 25MHz +/- 100ppm crystal oscillator (Abracon ASV-25.000MHZ-E-T).  
   * Waveform Generator control is via the Feather SPI bus; chip select is provided by the D6 GPIO pin.  
   *	Output signal peak-to-peak amplitude is adjustable with a maximum unipolar output of slightly less than 3.3 volts.  
@@ -22,7 +22,7 @@ Refer to the Analog Devices' AD9833 Waveform Generator data sheet for device con
 ![FeatherWing Implementation Chart](https://github.com/CedarGroveStudios/AD9833_FeatherWing/blob/master/docs/FeatherWing_Implementation_Chart.png)
 
 ## Primary Project Objectives
-1)	Generate useful waveforms  
+1)	Generate useful waveforms in the audio frequency range
   a.	Highly accurate and stable absolute frequency: ±0.5Hz, 1000ppm  
   b.	Moderately accurate waveform shape: 8-bit minimum  
   c.	Fixed 3.0 volt peak-to-peak output, centered at 1.5 volts  
